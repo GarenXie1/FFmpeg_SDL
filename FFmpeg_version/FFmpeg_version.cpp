@@ -1,11 +1,18 @@
 ﻿// FFmpeg_version.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
 
+
+#define __STDC_CONSTANT_MACROS
 #include <iostream>
+extern "C"
+{
+#include "libavcodec/avcodec.h "
+}
+
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	printf("FFmpeg version : %s\n", av_version_info());
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
