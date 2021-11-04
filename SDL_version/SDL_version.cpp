@@ -2,10 +2,15 @@
 //
 
 #include <iostream>
+#include <SDL.h>
 
-int main()
+int main(int argc, char *argv[])
 {
-    std::cout << "Hello World!\n";
+	SDL_version ver = { 0 };
+
+	SDL_GetVersion(&ver);
+	printf("Revision -> %d.%d.%d\n", ver.major, ver.minor, ver.patch);
+	return 0;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
