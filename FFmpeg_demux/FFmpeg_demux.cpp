@@ -88,6 +88,9 @@ int main(int argc, char **argv)
 			printf("index:%d\n", in_stream->index);
 			// sample_rate: 音频编解码器的采样率，单位为Hz
 			printf("samplerate:%dHz\n", in_stream->codecpar->sample_rate);
+
+			printf(" sampleformat -> %s\n ",av_get_sample_fmt_name((enum AVSampleFormat)in_stream->codecpar->format));
+#if 0
 			// codecpar->format: 音频采样格式
 			if (AV_SAMPLE_FMT_FLTP == in_stream->codecpar->format)
 			{
@@ -97,9 +100,12 @@ int main(int argc, char **argv)
 			{
 				printf("sampleformat:AV_SAMPLE_FMT_S16P\n");
 			}
+#endif
 			// channels: 音频信道数目
 			printf("channel number:%d\n", in_stream->codecpar->channels);
 			// codec_id: 音频压缩编码格式
+			printf("audio codec -> %s\n", avcodec_get_name(in_stream->codecpar->codec_id));
+#if 0
 			if (AV_CODEC_ID_AAC == in_stream->codecpar->codec_id)
 			{
 				printf("audio codec:AAC\n");
@@ -112,6 +118,7 @@ int main(int argc, char **argv)
 			{
 				printf("audio codec_id:%d\n", in_stream->codecpar->codec_id);
 			}
+#endif
 			// 音频总时长，单位为秒。注意如果把单位放大为毫秒或者微妙，音频总时长跟视频总时长不一定相等的
 			if (in_stream->duration != AV_NOPTS_VALUE)
 			{
@@ -135,6 +142,10 @@ int main(int argc, char **argv)
 			printf("index:%d\n", in_stream->index);
 			// avg_frame_rate: 视频帧率,单位为fps，表示每秒出现多少帧
 			printf("fps:%lffps\n", av_q2d(in_stream->avg_frame_rate));
+
+			//视频压缩编码格式
+			printf("video codec:%s\n", avcodec_get_name(in_stream->codecpar->codec_id));
+#if 0
 			if (AV_CODEC_ID_MPEG4 == in_stream->codecpar->codec_id) //视频压缩编码格式
 			{
 				printf("video codec:MPEG4\n");
@@ -147,6 +158,7 @@ int main(int argc, char **argv)
 			{
 				printf("video codec_id:%d\n", in_stream->codecpar->codec_id);
 			}
+#endif
 			// 视频帧宽度和帧高度
 			printf("width:%d height:%d\n", in_stream->codecpar->width,
 				in_stream->codecpar->height);
@@ -186,20 +198,20 @@ int main(int argc, char **argv)
 		{
 			if (pkt->stream_index == audioindex)
 			{
-				printf("audio pts: %lld\n", pkt->pts);
-				printf("audio dts: %lld\n", pkt->dts);
-				printf("audio size: %d\n", pkt->size);
-				printf("audio pos: %lld\n", pkt->pos);
-				printf("audio duration: %lf\n\n",
+				printf("audio 显示时间戳 pts: %lld\n", pkt->pts);
+				printf("audio 解码时间戳 dts: %lld\n", pkt->dts);
+				printf("audio 压缩编码数据大小 size: %d\n", pkt->size);
+				printf("audio 数据的偏移地址 pos: %lld\n", pkt->pos);
+				printf("audio 时长 duration: %lf\n\n",
 					pkt->duration * av_q2d(ifmt_ctx->streams[audioindex]->time_base));
 			}
 			else if (pkt->stream_index == videoindex)
 			{
-				printf("video pts: %lld\n", pkt->pts);
-				printf("video dts: %lld\n", pkt->dts);
-				printf("video size: %d\n", pkt->size);
-				printf("video pos: %lld\n", pkt->pos);
-				printf("video duration: %lf\n\n",
+				printf("video 显示时间戳 pts: %lld\n", pkt->pts);
+				printf("video 解码时间戳 dts: %lld\n", pkt->dts);
+				printf("video 压缩编码数据大小 size: %d\n", pkt->size);
+				printf("video 数据的偏移地址 pos: %lld\n", pkt->pos);
+				printf("video 时长 duration: %lf\n\n",
 					pkt->duration * av_q2d(ifmt_ctx->streams[videoindex]->time_base));
 			}
 			else
